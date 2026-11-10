@@ -281,13 +281,3 @@ MIT。完整文本见 [LICENSE](LICENSE)。
 - 应用图标由项目所有者提供
 - 视觉方向使用 unslop 方法，作者 Damir Sokolovsky（@heydamir），CC BY 4.0
 
-## 发布到 GitHub
-
-仓库已准备好 `README.md`、`LICENSE`、`.gitignore`、源码和 `dist/` 安装包。添加远程后推送即可：
-
-```bash
-git remote add origin git@github.com:<your-name>/miaomiao-uninstaller.git
-git push -u origin main
-```
-
-发布 Release 时建议同时上传 `dist/miaomiao_1.6.0_amd64.deb` 和 `dist/SHA256SUMS`。

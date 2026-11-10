@@ -282,13 +282,3 @@ MIT. See [LICENSE](LICENSE).
 - Application icon provided by the project owner
 - Visual direction follows the unslop method by Damir Sokolovsky (@heydamir), CC BY 4.0
 
-## Publish to GitHub
-
-The repository already contains `README.md`, `README.en.md`, `LICENSE`, `.gitignore`, source and the package under `dist/`. Add the remote and push:
-
-```bash
-git remote add origin git@github.com:<your-name>/miaomiao-uninstaller.git
-git push -u origin main
-```
-
-For a GitHub Release, attach `dist/miaomiao_1.6.0_amd64.deb` and `dist/SHA256SUMS`.
