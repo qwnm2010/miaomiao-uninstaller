@@ -1,11 +1,11 @@
-# 喵喵 1.5.0
+# 喵喵 1.6.0
 
 简体中文 | [English](README.en.md)
 
 Kali Linux 2026.3 及 Debian 系发行版的图形化应用卸载与残留清理工具。界面采用冷灰仪器面板：平直表面、发丝线、等宽数字，无玻璃、光斑或噪点。
 
 - 源码：Python + PyQt6 + C11
-- 安装包：`dist/miaomiao_1.5.0_amd64.deb`
+- 安装包：`dist/miaomiao_1.6.0_amd64.deb`
 - 许可证：MIT
 
 ![主界面](screenshot.png)
@@ -25,6 +25,26 @@ Kali Linux 2026.3 及 Debian 系发行版的图形化应用卸载与残留清理
 - 支持应用内卸载喵喵自身，并清理数据、菜单和桌面入口
 - C 加速目录大小计算，Python 负责全部删除决策与权限校验
 - 无网络请求、无遥测、无账户体系
+- 界面语言启动时跟随系统，支持中文和英文
+
+## 界面语言
+
+程序启动时按以下顺序读取系统语言：
+
+```text
+LC_ALL → LC_MESSAGES → LANG
+```
+
+- 以 `zh` 开头：中文界面
+- 其他值或未设置：英文界面
+- 也可显式覆盖：
+
+```bash
+MIAOMIAO_LANG=zh miaomiao
+MIAOMIAO_LANG=en miaomiao
+```
+
+语言在启动时确定；修改后重新启动程序即可。中文界面使用更紧凑的侧栏，英文界面会加宽侧栏、搜索框和操作按钮，避免文字截断。
 
 ## 技术栈
 
@@ -64,14 +84,14 @@ Kali Linux 2026.3 及 Debian 系发行版的图形化应用卸载与残留清理
 ### 使用仓库中的安装包
 
 ```bash
-sudo dpkg -i dist/miaomiao_1.5.0_amd64.deb
+sudo dpkg -i dist/miaomiao_1.6.0_amd64.deb
 ```
 
 如果 `_apt` 无法读取 `/home` 下的 deb（家目录权限 700 时常见）：
 
 ```bash
-cp dist/miaomiao_1.5.0_amd64.deb /tmp/
-sudo apt install /tmp/miaomiao_1.5.0_amd64.deb
+cp dist/miaomiao_1.6.0_amd64.deb /tmp/
+sudo apt install /tmp/miaomiao_1.6.0_amd64.deb
 ```
 
 安装后：
@@ -80,7 +100,7 @@ sudo apt install /tmp/miaomiao_1.5.0_amd64.deb
 miaomiao
 ```
 
-Debian 内部包名是 `liquid-uninstaller`，程序名、菜单名和命令是 `miaomiao` / 喵喵。保留内部包名是为了让 1.1.x 到 1.5.0 能原地升级；`apt` 显示 `liquid-uninstaller` 属于正常现象。
+Debian 内部包名是 `liquid-uninstaller`，程序名、菜单名和命令是 `miaomiao` / 喵喵。保留内部包名是为了让 1.1.x 到 1.6.0 能原地升级；`apt` 显示 `liquid-uninstaller` 属于正常现象。
 
 ### 从源码运行
 
@@ -109,7 +129,7 @@ make native
 产物：
 
 ```text
-dist/miaomiao_1.5.0_amd64.deb
+dist/miaomiao_1.6.0_amd64.deb
 ```
 
 也可以直接运行 `./build-deb.sh`：脚本会自行编译 C 库，不要求先执行 `make native`。
@@ -155,7 +175,7 @@ usr/share/doc/liquid-uninstaller/
 `debian/control` 关键字段：
 
 - `Package: liquid-uninstaller`
-- `Version: 1.5.0`
+- `Version: 1.6.0`
 - `Architecture: amd64`
 - `Depends: python3, python3-pyqt6, pkexec, desktop-file-utils, hicolor-icon-theme, libc6`
 - `Suggests: flatpak, snapd`
@@ -189,6 +209,7 @@ usr/share/doc/liquid-uninstaller/
 ├── glass_uninstaller/
 │   ├── backend.py      # 扫描、计划、卸载、隔离、历史
 │   ├── native.py       # C 库 ctypes 绑定
+│   ├── i18n.py         # 系统语言检测与中英文文案
 │   ├── theme.py        # 配色、字体、图标、表面
 │   ├── widgets.py      # 行、筛选、开关、标尺、加载
 │   ├── pages.py        # 应用、残留、历史页面
@@ -199,7 +220,7 @@ usr/share/doc/liquid-uninstaller/
 ├── packaging/          # 启动脚本、desktop、图标
 ├── debian/             # control、postinst、postrm、copyright
 ├── dist/
-│   ├── miaomiao_1.5.0_amd64.deb
+│   ├── miaomiao_1.6.0_amd64.deb
 │   └── SHA256SUMS
 └── *.png               # README 截图
 ```
@@ -209,8 +230,8 @@ usr/share/doc/liquid-uninstaller/
 ```bash
 python3 -m py_compile app.py glass_uninstaller/*.py
 desktop-file-validate packaging/miaomiao.desktop
-dpkg-deb --info dist/miaomiao_1.5.0_amd64.deb
-dpkg-deb --contents dist/miaomiao_1.5.0_amd64.deb
+dpkg-deb --info dist/miaomiao_1.6.0_amd64.deb
+dpkg-deb --contents dist/miaomiao_1.6.0_amd64.deb
 (cd dist && sha256sum -c SHA256SUMS)
 ```
 
@@ -269,4 +290,4 @@ git remote add origin git@github.com:<your-name>/miaomiao-uninstaller.git
 git push -u origin main
 ```
 
-发布 Release 时建议同时上传 `dist/miaomiao_1.5.0_amd64.deb` 和 `dist/SHA256SUMS`。
+发布 Release 时建议同时上传 `dist/miaomiao_1.6.0_amd64.deb` 和 `dist/SHA256SUMS`。

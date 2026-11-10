@@ -1,5 +1,5 @@
 Package: liquid-uninstaller
-Version: 1.5.0
+Version: 1.6.0
 Section: admin
 Priority: optional
 Architecture: amd64
@@ -10,7 +10,8 @@ Suggests: flatpak, snapd
 Description: 喵喵 — technical instrument-panel application uninstaller for Debian
  喵喵 (Miaomiao) is a graphical uninstaller with a cold, precise instrument
  panel interface, designed for Kali Linux 2026.3 / KDE Plasma 6 and
- dependency-compatible Debian-based systems.
+ dependency-compatible Debian-based systems. The interface follows the system
+ locale and supports Chinese and English.
  .
  It supports APT, Flatpak, Snap, local bundles and AppImages, previews reverse
  dependencies and running processes, scans user-level configuration leftovers,

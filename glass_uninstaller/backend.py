@@ -1605,7 +1605,7 @@ class SelfUninstallWorker(QThread):
             "errors": [], "remove_data": self.remove_data,
             "app": {
                 "id": "miaomiao", "name": SELF_APP_NAME,
-                "version": "1.5.0", "source": "系统", "summary": "",
+                "version": "1.6.0", "source": "系统", "summary": "",
                 "package": SELF_PACKAGE, "icon": "",
             },
         }

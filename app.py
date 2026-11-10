@@ -15,7 +15,7 @@ if str(BASE) not in sys.path:
 from PyQt6.QtCore import Qt, QTimer
 from PyQt6.QtWidgets import QApplication
 
-from glass_uninstaller import theme
+from glass_uninstaller import i18n, theme
 from glass_uninstaller.window import MainWindow
 
 
@@ -48,10 +48,11 @@ def main() -> int:
     os.environ.setdefault("QT_ENABLE_HIGHDPI_SCALING", "1")
     cleanup_legacy_user_files()
     app = QApplication(sys.argv)
+    i18n.install()
     app.setApplicationName("miaomiao")
-    app.setApplicationDisplayName("喵喵")
+    app.setApplicationDisplayName("Miaomiao" if i18n.EN else "喵喵")
     app.setDesktopFileName("miaomiao")
-    app.setApplicationVersion("1.5.0")
+    app.setApplicationVersion("1.6.0")
     app.setOrganizationName("Miaomiao")
     app.setStyle("Fusion")
     app.setFont(theme.font(11, 400))

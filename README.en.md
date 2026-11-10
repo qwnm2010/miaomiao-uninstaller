@@ -1,20 +1,20 @@
-# Miaomiao 1.5.0
+# Miaomiao 1.6.0
 
 [简体中文](README.md) | English
 
 A graphical application uninstaller and residual cleaner for Kali Linux 2026.3 and Debian-based systems. The interface is a cold instrument panel: flat surfaces, hairline rules, monospaced figures, no glass, glows or noise.
 
 - Source: Python + PyQt6 + C11
-- Package: `dist/miaomiao_1.5.0_amd64.deb`
+- Package: `dist/miaomiao_1.6.0_amd64.deb`
 - License: MIT
 
-![Main window](screenshot.png)
+![Main window](screenshot-en.png)
 
-![Intro](intro.png)
+![Intro](intro-en.png)
 
-![Loading](loading.png)
+![Loading](loading-en.png)
 
-![Self-uninstall](self-uninstall.png)
+![Self-uninstall](self-uninstall-en.png)
 
 ## Features
 
@@ -25,6 +25,26 @@ A graphical application uninstaller and residual cleaner for Kali Linux 2026.3 a
 - Can uninstall Miaomiao itself, including user data, menu entries and desktop files
 - Native C accelerator for directory sizing; Python owns every deletion decision and authorization check
 - No network requests, telemetry or accounts
+- The interface follows the system language: Chinese or English
+
+## Language
+
+The application reads the system locale in this order:
+
+```text
+LC_ALL → LC_MESSAGES → LANG
+```
+
+- values starting with `zh`: Chinese UI
+- any other value or unset: English UI
+- explicit override:
+
+```bash
+MIAOMIAO_LANG=zh miaomiao
+MIAOMIAO_LANG=en miaomiao
+```
+
+Language is selected at launch. Restart the app after changing it. The Chinese sidebar is more compact; the English UI widens the sidebar, search field and action buttons so labels are not clipped.
 
 ## Technology
 
@@ -64,14 +84,14 @@ The library only reads the filesystem. It never deletes files. `glass_uninstalle
 ### From the bundled package
 
 ```bash
-sudo dpkg -i dist/miaomiao_1.5.0_amd64.deb
+sudo dpkg -i dist/miaomiao_1.6.0_amd64.deb
 ```
 
 If `_apt` cannot read a deb under `/home` because of mode 700:
 
 ```bash
-cp dist/miaomiao_1.5.0_amd64.deb /tmp/
-sudo apt install /tmp/miaomiao_1.5.0_amd64.deb
+cp dist/miaomiao_1.6.0_amd64.deb /tmp/
+sudo apt install /tmp/miaomiao_1.6.0_amd64.deb
 ```
 
 Run:
@@ -80,7 +100,7 @@ Run:
 miaomiao
 ```
 
-The Debian package name is `liquid-uninstaller`; the application, menu entry and command are `miaomiao`. The package name is kept for in-place upgrades from 1.1.x to 1.5.0. Seeing `liquid-uninstaller` in `apt` is expected.
+The Debian package name is `liquid-uninstaller`; the application, menu entry and command are `miaomiao`. The package name is kept for in-place upgrades from 1.1.x to 1.6.0. Seeing `liquid-uninstaller` in `apt` is expected.
 
 ### From source
 
@@ -109,7 +129,7 @@ make native
 Output:
 
 ```text
-dist/miaomiao_1.5.0_amd64.deb
+dist/miaomiao_1.6.0_amd64.deb
 ```
 
 `./build-deb.sh` compiles the C library itself, so `make native` is optional.
@@ -156,7 +176,7 @@ usr/share/doc/liquid-uninstaller/
 Key `debian/control` fields:
 
 - `Package: liquid-uninstaller`
-- `Version: 1.5.0`
+- `Version: 1.6.0`
 - `Architecture: amd64`
 - `Depends: python3, python3-pyqt6, pkexec, desktop-file-utils, hicolor-icon-theme, libc6`
 - `Suggests: flatpak, snapd`
@@ -190,6 +210,7 @@ One `OutCubic` curve; motion only explains state:
 ├── glass_uninstaller/
 │   ├── backend.py      # scanning, plans, removal, quarantine, history
 │   ├── native.py       # ctypes bindings
+│   ├── i18n.py         # locale detection and bilingual strings
 │   ├── theme.py        # palette, type, icons, surfaces
 │   ├── widgets.py      # rows, filters, switches, ruler, loading
 │   ├── pages.py        # applications, residuals, history
@@ -200,7 +221,7 @@ One `OutCubic` curve; motion only explains state:
 ├── packaging/          # launcher, desktop file, icons
 ├── debian/             # control, postinst, postrm, copyright
 ├── dist/
-│   ├── miaomiao_1.5.0_amd64.deb
+│   ├── miaomiao_1.6.0_amd64.deb
 │   └── SHA256SUMS
 └── *.png               # README screenshots
 ```
@@ -210,8 +231,8 @@ One `OutCubic` curve; motion only explains state:
 ```bash
 python3 -m py_compile app.py glass_uninstaller/*.py
 desktop-file-validate packaging/miaomiao.desktop
-dpkg-deb --info dist/miaomiao_1.5.0_amd64.deb
-dpkg-deb --contents dist/miaomiao_1.5.0_amd64.deb
+dpkg-deb --info dist/miaomiao_1.6.0_amd64.deb
+dpkg-deb --contents dist/miaomiao_1.6.0_amd64.deb
 (cd dist && sha256sum -c SHA256SUMS)
 ```
 
@@ -270,4 +291,4 @@ git remote add origin git@github.com:<your-name>/miaomiao-uninstaller.git
 git push -u origin main
 ```
 
-For a GitHub Release, attach `dist/miaomiao_1.5.0_amd64.deb` and `dist/SHA256SUMS`.
+For a GitHub Release, attach `dist/miaomiao_1.6.0_amd64.deb` and `dist/SHA256SUMS`.

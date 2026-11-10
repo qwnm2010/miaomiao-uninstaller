@@ -20,7 +20,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-from . import theme
+from . import i18n, theme
 from .backend import AppInfo, ResidualItem, human_size
 
 
@@ -463,7 +463,7 @@ class SearchBox(QWidget):
             p.setPen(QColor(theme.TEXT_DIM))
             p.drawText(QRectF(32, 0, self.width() - 44, self.height()),
                        Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft,
-                       self._placeholder)
+                       i18n.tr(self._placeholder))
 
 
 class GlassToggle(QAbstractButton):
@@ -548,7 +548,7 @@ class SegmentedControl(QWidget):
 
     def __init__(self, options: list[tuple[str, str]], parent=None) -> None:
         super().__init__(parent)
-        self.options = options
+        self.options = [(key, i18n.tr(label)) for key, label in options]
         self.index = 0
         self._pos = 0.0
         self.setFixedHeight(36)
@@ -784,8 +784,8 @@ class AppDelegate(QStyledItemDelegate):
                    Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft, name)
         p.setFont(theme.font(11, 400))
         p.setPen(QColor(theme.TEXT_MUTED))
-        sub = app.package if app.source != "本地" else "用户安装"
-        sub = QFontMetrics(p.font()).elidedText(f"{app.source}  ·  {sub}",
+        sub = app.package if app.source != "本地" else i18n.tr("用户安装")
+        sub = QFontMetrics(p.font()).elidedText(f"{i18n.tr(app.source)}  ·  {sub}",
                                                 Qt.TextElideMode.ElideRight,
                                                 int(r.right() - x - right_pad))
         p.drawText(QRectF(x, r.top() + 34, r.right() - x - right_pad, 16),
@@ -916,7 +916,7 @@ class ResidualRow(QWidget):
         p.drawText(QRectF(64, r.top() + 28, self.width() * 0.54, 16),
                    Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft, path)
         badge_col = theme.SUCCESS if self.item.safety == "safe" else theme.AMBER
-        label = "可清理" if self.item.safety == "safe" else "需确认"
+        label = i18n.tr("可清理") if self.item.safety == "safe" else i18n.tr("需确认")
         make_badge(p, QRectF(self.width() - 150, r.center().y() - 9, 64, 18),
                    label, badge_col, 11, 22)
         p.setFont(theme.mono_font(11, 500))
@@ -933,7 +933,7 @@ class StatCard(QWidget):
         self.setMinimumHeight(62)
 
     def set_value(self, value: str) -> None:
-        self.value = value; self.update()
+        self.value = i18n.tr(value); self.update()
 
     def paintEvent(self, e) -> None:
         p = QPainter(self)
@@ -943,7 +943,7 @@ class StatCard(QWidget):
         p.setFont(theme.font(11, 500))
         p.setPen(QColor(theme.TEXT_MUTED))
         p.drawText(QRectF(r.left() + 12, r.top() + 8, r.width() - 24, 16),
-                   Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft, self.label)
+                   Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft, i18n.tr(self.label))
         p.setFont(theme.mono_font(18, 500))
         p.setPen(QColor(theme.TEXT))
         p.drawText(QRectF(r.left() + 12, r.top() + 26, r.width() - 24, 24),
@@ -969,7 +969,7 @@ class ProgressRing(QWidget):
     def set_progress(self, value: int, label: str = "") -> None:
         self.value = max(0, min(100, value))
         if label:
-            self.label = label
+            self.label = i18n.tr(label)
         self._anim.stop()
         self._anim.setStartValue(self._display)
         self._anim.setEndValue(float(self.value))
@@ -1014,7 +1014,7 @@ class Toast(QWidget):
         self._show_anim.setEasingCurve(QEasingCurve.Type.OutCubic)
 
     def show_message(self, text: str, kind: str = "info", duration: int = 2800) -> None:
-        self.text = text
+        self.text = i18n.tr(text)
         self.kind = kind
         fm = QFontMetrics(theme.font(12, 550))
         self.setFixedWidth(min(520, fm.horizontalAdvance(text) + 64))
@@ -1136,16 +1136,16 @@ class IntroOverlay(QWidget):
         p.setFont(theme.font(28, 500))
         p.setPen(QColor(theme.TEXT))
         p.drawText(QRectF(0, cy - 18, self.width(), 36),
-                   Qt.AlignmentFlag.AlignCenter, "喵喵")
+                   Qt.AlignmentFlag.AlignCenter, i18n.tr("喵喵"))
         p.setFont(theme.font(12, 400))
         p.setPen(QColor(theme.TEXT_MUTED))
         p.drawText(QRectF(0, cy + 20, self.width(), 20),
-                   Qt.AlignmentFlag.AlignCenter, "应用卸载与残留清理")
+                   Qt.AlignmentFlag.AlignCenter, i18n.tr("应用卸载与残留清理"))
 
         p.setFont(theme.font(11, 400))
         p.setPen(QColor(theme.TEXT_DIM))
         p.drawText(QRectF(0, cy + 52, self.width(), 18),
-                   Qt.AlignmentFlag.AlignCenter, "读取应用清单")
+                   Qt.AlignmentFlag.AlignCenter, i18n.tr("读取应用清单"))
 
         track = QRectF(cx - 80, cy + 86, 160, 2)
         p.setPen(Qt.PenStyle.NoPen)
@@ -1167,7 +1167,7 @@ class IntroOverlay(QWidget):
         p.setFont(theme.font(10, 400))
         p.setPen(QColor(theme.TEXT_DIM))
         p.drawText(QRectF(0, self.height() - 40, self.width(), 18),
-                   Qt.AlignmentFlag.AlignCenter, "点击跳过")
+                   Qt.AlignmentFlag.AlignCenter, i18n.tr("点击跳过"))
 
 
 class LoadingOverlay(QWidget):
@@ -1242,17 +1242,17 @@ class LoadingOverlay(QWidget):
         p.setPen(QColor(theme.TEXT))
         p.drawText(QRectF(card.left() + 24, card.top() + 22, 260, 20),
                    Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
-                   "读取应用清单")
+                   i18n.tr("读取应用清单"))
         p.setFont(theme.font(11, 400))
         p.setPen(QColor(theme.TEXT_MUTED))
         p.drawText(QRectF(card.left() + 24, card.top() + 46, 300, 18),
                    Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
-                   "APT · Flatpak · Snap · 本地")
+                   i18n.tr("APT · Flatpak · Snap · 本地"))
         p.setFont(theme.mono_font(10, 500))
         p.setPen(QColor(theme.TEXT_DIM))
         p.drawText(QRectF(card.left() + 24, card.top() + 70, card.width() - 48, 16),
                    Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
-                   "读取  /  本地软件包")
+                   i18n.tr("读取 / 本地软件包"))
 
         track = QRectF(card.left() + 24, card.top() + 105, card.width() - 48, 2)
         p.setPen(Qt.PenStyle.NoPen)

@@ -11,6 +11,8 @@ from PyQt6.QtGui import (
     QPen, QPixmap, QRadialGradient,
 )
 
+from . import i18n
+
 APP_DIR = Path(__file__).resolve().parent.parent
 ASSETS = APP_DIR / "assets"
 
@@ -56,14 +58,18 @@ def families() -> list[str]:
 
 
 def ui_family() -> str:
-    for name in ("Noto Sans CJK SC", "Noto Sans CJK JP", "Noto Sans", "DejaVu Sans"):
+    names = (("Noto Sans", "DejaVu Sans") if i18n.EN else
+             ("Noto Sans CJK SC", "Noto Sans CJK JP", "Noto Sans", "DejaVu Sans"))
+    for name in names:
         if name in families():
             return name
     return "Sans Serif"
 
 
 def display_family() -> str:
-    for name in ("Noto Sans Display", "Noto Sans CJK SC", "Noto Sans", "DejaVu Sans"):
+    names = (("Noto Sans Display", "Noto Sans", "DejaVu Sans") if i18n.EN else
+             ("Noto Sans Display", "Noto Sans CJK SC", "Noto Sans", "DejaVu Sans"))
+    for name in names:
         if name in families():
             return name
     return "Sans Serif"

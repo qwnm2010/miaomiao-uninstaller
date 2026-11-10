@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import (
     QScrollArea, QSizePolicy, QSpacerItem, QStackedWidget, QVBoxLayout, QWidget,
 )
 
-from . import theme
+from . import i18n, theme
 from .backend import (
     AppInfo, ProcessInfo, ResidualItem, ScanResult, UninstallOptions, human_size,
 )
@@ -48,13 +48,13 @@ def hline() -> QFrame:
 class Badge(QWidget):
     def __init__(self, text: str, color: QColor, parent=None) -> None:
         super().__init__(parent)
-        self.text = text
+        self.text = i18n.tr(text)
         self.color = QColor(color)
         self.setFixedHeight(18)
         self._resize()
 
     def set_text(self, text: str, color: QColor | None = None) -> None:
-        self.text = text
+        self.text = i18n.tr(text)
         if color:
             self.color = QColor(color)
         self._resize()
@@ -148,8 +148,8 @@ class OptionRow(QWidget):
 class EmptyState(QWidget):
     def __init__(self, title: str, body: str, icon: str = "sparkles", parent=None) -> None:
         super().__init__(parent)
-        self.title = title
-        self.body = body
+        self.title = i18n.tr(title)
+        self.body = i18n.tr(body)
         self.icon_kind = icon
         self.setMinimumHeight(220)
 
@@ -196,7 +196,7 @@ class Sidebar(QWidget):
 
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
-        self.setFixedWidth(240)
+        self.setFixedWidth(260 if i18n.EN else 240)
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(16, 16, 16, 16)
         self.layout.setSpacing(0)
@@ -266,7 +266,7 @@ class Sidebar(QWidget):
         self.self_uninstall.clicked.connect(self.self_uninstall_requested)
         self.layout.addWidget(self.self_uninstall)
         self.layout.addSpacing(8)
-        version = QLabel("喵喵 1.5.0 · C 加速")
+        version = QLabel("喵喵 1.6.0 · C 加速")
         version.setFont(theme.mono_font(10, 400))
         version.setStyleSheet("color: #98A1AB; background: transparent;")
         version.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -363,14 +363,16 @@ class FootprintRuler(QWidget):
         theme.paint_glass(p, r, 8, fill=1.0)
         p.setFont(theme.font(12, 500))
         p.setPen(QColor(theme.TEXT))
-        p.drawText(QRectF(r.left() + 12, r.top() + 9, 120, 16),
-                   Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter, "残留足迹")
+        p.drawText(QRectF(r.left() + 12, r.top() + 9, 150, 16),
+                   Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter,
+                   i18n.tr("残留足迹"))
         p.setFont(theme.mono_font(10, 500))
         p.setPen(QColor(theme.TEXT_MUTED))
-        right = ("残留 %s" % human_size(self.residual_size)) if self.scanned else "扫描中"
-        p.drawText(QRectF(r.left() + 120, r.top() + 9, r.width() - 132, 16),
+        right = (f"{i18n.tr('残留')} {human_size(self.residual_size)}"
+                 if self.scanned else i18n.tr("扫描中"))
+        p.drawText(QRectF(r.left() + 150, r.top() + 9, r.width() - 162, 16),
                    Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter,
-                   "应用 %s  ·  %s" % (human_size(self.app_size), right))
+                   f"{i18n.tr('应用')} {human_size(self.app_size)}  ·  {right}")
         total = self.app_size + self.residual_size
         bar = QRectF(r.left() + 12, r.top() + 34, r.width() - 24, 8)
         p.setPen(Qt.PenStyle.NoPen)
@@ -393,14 +395,17 @@ class FootprintRuler(QWidget):
         p.setFont(theme.mono_font(9, 400))
         p.setPen(QColor(theme.TEXT_MUTED))
         p.drawText(QRectF(bar.left(), bar.bottom() + 10, bar.width() / 2, 14),
-                   Qt.AlignmentFlag.AlignLeft, "应用")
+                   Qt.AlignmentFlag.AlignLeft, i18n.tr("应用"))
         p.drawText(QRectF(bar.left() + bar.width() / 2, bar.bottom() + 10,
                           bar.width() / 2, 14),
-                   Qt.AlignmentFlag.AlignRight, "残留" if self.scanned else "扫描中")
+                   Qt.AlignmentFlag.AlignRight,
+                   i18n.tr("残留") if self.scanned else i18n.tr("扫描中"))
         if self.shared:
             p.setFont(theme.font(10, 400))
             p.drawText(QRectF(r.left() + 12, r.bottom() - 16, r.width() - 24, 14),
-                       Qt.AlignmentFlag.AlignLeft, f"已排除 {self.shared} 个共享目录")
+                       Qt.AlignmentFlag.AlignLeft,
+                       (f"Excluded {self.shared} shared folders" if i18n.EN
+                        else f"已排除 {self.shared} 个共享目录"))
 
 
 class DetailPanel(GlassPanel):
@@ -569,7 +574,7 @@ class DetailPanel(GlassPanel):
         right = QVBoxLayout()
         right.setSpacing(2)
         self.uninstall_btn = GlassButton("卸载应用", "danger", "trash", height=40, radius=8)
-        self.uninstall_btn.setFixedWidth(200)
+        self.uninstall_btn.setFixedWidth(220 if i18n.EN else 200)
         self.uninstall_btn.clicked.connect(self._request_uninstall)
         right.addWidget(self.uninstall_btn)
         self.auth_hint = QLabel("需要系统授权 · 由 Polkit 验证")
@@ -603,7 +608,8 @@ class DetailPanel(GlassPanel):
         self.summary_label.setText(app.summary or "此应用没有提供描述。")
         self.stat_source.set_value(app.source)
         self.stat_size.set_value(human_size(app.size))
-        self.stat_version.set_value(app.version[:20] or "—")
+        version = app.version if app.version not in ("用户安装",) else "—"
+        self.stat_version.set_value(version[:20] or "—")
         self.auto_row.setVisible(app.source == "APT")
         self.kill_row.setVisible(False)
         self.risk_badge.set_text("检查中", theme.TEXT_MUTED)
@@ -774,7 +780,7 @@ class AppPage(QWidget):
         titles.addWidget(self.subtitle)
         header.addLayout(titles, 1)
         self.search = SearchBox("搜索应用或包名")
-        self.search.setFixedWidth(260)
+        self.search.setFixedWidth(300 if i18n.EN else 260)
         self.search.textChanged.connect(self._on_search)
         header.addWidget(self.search, 0, Qt.AlignmentFlag.AlignVCenter)
         self.refresh = IconButton("refresh", 32, "重新扫描应用")
@@ -785,8 +791,8 @@ class AppPage(QWidget):
         body = QHBoxLayout()
         body.setSpacing(16)
         list_panel = GlassPanel(self, radius=16, fill=1.0)
-        list_panel.setMinimumWidth(400)
-        list_panel.setMaximumWidth(460)
+        list_panel.setMinimumWidth(420 if i18n.EN else 400)
+        list_panel.setMaximumWidth(500 if i18n.EN else 460)
         ll = QVBoxLayout(list_panel)
         ll.setContentsMargins(12, 16, 12, 12)
         ll.setSpacing(12)
@@ -915,11 +921,8 @@ class AppPage(QWidget):
 
     def _set_filter(self, key: str) -> None:
         self.filter_key = key
-        for pill in self.pills:
-            pill.setChecked(pill.text() == {
-                "all": "全部", "gui": "图形应用", "APT": "APT",
-                "Flatpak": "Flatpak", "本地": "本地",
-            }[key])
+        for pill, pill_key in zip(self.pills, ("all", "gui", "APT", "Flatpak", "本地")):
+            pill.setChecked(pill_key == key)
         self._move_filter_indicator(True)
         self._apply_filter()
 
@@ -1013,7 +1016,7 @@ class ResidualPage(QWidget):
         titles.addWidget(self.subtitle)
         header.addLayout(titles, 1)
         self.rescan = GlassButton("重新扫描", "secondary", "refresh", height=36, radius=8)
-        self.rescan.setFixedWidth(130)
+        self.rescan.setFixedWidth(140 if i18n.EN else 130)
         self.rescan.clicked.connect(self._rescan)
         header.addWidget(self.rescan)
         self.layout.addLayout(header)
@@ -1062,7 +1065,7 @@ class ResidualPage(QWidget):
         lh.addWidget(cap)
         lh.addStretch(1)
         self.select_safe = GlassButton("全选可清理", "ghost", "check", height=32, radius=6)
-        self.select_safe.setFixedWidth(150)
+        self.select_safe.setFixedWidth(166 if i18n.EN else 150)
         self.select_safe.clicked.connect(self._select_safe)
         lh.addWidget(self.select_safe)
         ll.addLayout(lh)
@@ -1115,11 +1118,11 @@ class ResidualPage(QWidget):
         al.addLayout(text, 1)
         self.mode = SegmentedControl([("quarantine", "隔离区"), ("permanent", "永久删除")])
         self.mode.changed.connect(lambda _index: self._update_selection())
-        self.mode.setFixedWidth(238)
+        self.mode.setFixedWidth(260 if i18n.EN else 238)
         al.addWidget(self.mode)
         al.addSpacing(8)
         self.clean_btn = GlassButton("清理所选", "primary", "broom", height=40, radius=8)
-        self.clean_btn.setFixedWidth(148)
+        self.clean_btn.setFixedWidth(172 if i18n.EN else 148)
         self.clean_btn.clicked.connect(self._clean)
         al.addWidget(self.clean_btn)
         self.layout.addWidget(action)
@@ -1246,9 +1249,12 @@ class HistoryCard(GlassPanel):
         except (ValueError, TypeError):
             stamp = "—"
         residual_count = len([r for r in record.get("residuals", []) if r.get("moved_to")])
-        mode = "隔离" if record.get("mode") == "quarantine" else "永久删除 · 备份"
-        meta = QLabel(f"{stamp}  ·  {record.get('native_message') or '处理完成'}  ·  "
-                      f"{residual_count} 项残留 · {human_size(record.get('freed', 0))} · {mode}")
+        mode = i18n.tr("隔离") if record.get("mode") == "quarantine" else i18n.tr("永久删除 · 备份")
+        native = i18n.tr(record.get("native_message") or "处理完成")
+        residue_text = (f"{residual_count} residual items" if i18n.EN
+                        else f"{residual_count} 项残留")
+        meta = QLabel(f"{stamp}  ·  {native}  ·  "
+                      f"{residue_text} · {human_size(record.get('freed', 0))} · {mode}")
         meta.setFont(theme.mono_font(10, 400))
         meta.setStyleSheet("color: #68737F; background: transparent;")
         info.addWidget(meta)
@@ -1256,12 +1262,12 @@ class HistoryCard(GlassPanel):
 
         if residual_count or record.get("backup"):
             btn = GlassButton("恢复", "secondary", "restore", height=32, radius=6)
-            btn.setFixedWidth(84)
+            btn.setFixedWidth(100 if i18n.EN else 84)
             btn.clicked.connect(lambda: self.restore_requested.emit(record.get("id", "")))
             self.layout.addWidget(btn)
         if record.get("quarantine_dir") or record.get("backup"):
             btn2 = GlassButton("彻底删除", "ghost", "trash", height=32, radius=6)
-            btn2.setFixedWidth(92)
+            btn2.setFixedWidth(132 if i18n.EN else 92)
             btn2.clicked.connect(lambda: self.purge_requested.emit(record.get("id", "")))
             self.layout.addWidget(btn2)
 
@@ -1292,7 +1298,7 @@ class HistoryPage(QWidget):
         titles.addWidget(self.subtitle)
         header.addLayout(titles, 1)
         self.open_btn = GlassButton("数据目录", "secondary", "folder", height=36, radius=8)
-        self.open_btn.setFixedWidth(146)
+        self.open_btn.setFixedWidth(156 if i18n.EN else 146)
         self.open_btn.clicked.connect(self.open_data_requested)
         header.addWidget(self.open_btn)
         self.layout.addLayout(header)
