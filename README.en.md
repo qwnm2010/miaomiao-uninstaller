@@ -8,13 +8,13 @@ A graphical application uninstaller and residual cleaner for Kali Linux 2026.3 a
 - Package: `dist/miaomiao_1.6.0_amd64.deb`
 - License: MIT
 
-![Main window](screenshot-en.png)
+![Main window](docs/images/screenshot-en.png)
 
-![Intro](intro-en.png)
+![Intro](docs/images/intro-en.png)
 
-![Loading](loading-en.png)
+![Loading](docs/images/loading-en.png)
 
-![Self-uninstall](self-uninstall-en.png)
+![Self-uninstall](docs/images/self-uninstall-en.png)
 
 ## Features
 
@@ -207,6 +207,9 @@ One `OutCubic` curve; motion only explains state:
 ├── README.en.md
 ├── LICENSE
 ├── .gitignore
+├── docs/
+│   ├── GITHUB.md
+│   └── images/        # README screenshots
 ├── glass_uninstaller/
 │   ├── backend.py      # scanning, plans, removal, quarantine, history
 │   ├── native.py       # ctypes bindings
@@ -220,10 +223,9 @@ One `OutCubic` curve; motion only explains state:
 ├── assets/             # application icon
 ├── packaging/          # launcher, desktop file, icons
 ├── debian/             # control, postinst, postrm, copyright
-├── dist/
-│   ├── miaomiao_1.6.0_amd64.deb
-│   └── SHA256SUMS
-└── *.png               # README screenshots
+└── dist/
+    ├── miaomiao_1.6.0_amd64.deb
+    └── SHA256SUMS
 ```
 
 ## Verification
@@ -276,6 +278,8 @@ dpkg-deb --contents dist/miaomiao_1.6.0_amd64.deb
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+See [docs/GITHUB.md](docs/GITHUB.md) for update and release commands.
 
 ## Credits
 

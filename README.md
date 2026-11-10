@@ -8,13 +8,13 @@ Kali Linux 2026.3 及 Debian 系发行版的图形化应用卸载与残留清理
 - 安装包：`dist/miaomiao_1.6.0_amd64.deb`
 - 许可证：MIT
 
-![主界面](screenshot.png)
+![主界面](docs/images/screenshot.png)
 
-![启动](intro.png)
+![启动](docs/images/intro.png)
 
-![加载](loading.png)
+![加载](docs/images/loading.png)
 
-![自卸载](self-uninstall.png)
+![自卸载](docs/images/self-uninstall.png)
 
 ## 功能
 
@@ -206,6 +206,9 @@ usr/share/doc/liquid-uninstaller/
 ├── README.en.md
 ├── LICENSE
 ├── .gitignore
+├── docs/
+│   ├── GITHUB.md
+│   └── images/        # README 截图
 ├── glass_uninstaller/
 │   ├── backend.py      # 扫描、计划、卸载、隔离、历史
 │   ├── native.py       # C 库 ctypes 绑定
@@ -219,10 +222,9 @@ usr/share/doc/liquid-uninstaller/
 ├── assets/             # 应用图标
 ├── packaging/          # 启动脚本、desktop、图标
 ├── debian/             # control、postinst、postrm、copyright
-├── dist/
-│   ├── miaomiao_1.6.0_amd64.deb
-│   └── SHA256SUMS
-└── *.png               # README 截图
+└── dist/
+    ├── miaomiao_1.6.0_amd64.deb
+    └── SHA256SUMS
 ```
 
 ## 验证
@@ -275,6 +277,8 @@ dpkg-deb --contents dist/miaomiao_1.6.0_amd64.deb
 ## 许可证
 
 MIT。完整文本见 [LICENSE](LICENSE)。
+
+更新与发布操作见 [docs/GITHUB.md](docs/GITHUB.md)。
 
 ## 致谢
 

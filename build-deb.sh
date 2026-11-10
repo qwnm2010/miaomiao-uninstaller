@@ -29,9 +29,10 @@ for s in 128 256 512; do
 done
 install -m644 "$ROOT/README.md" "$ROOT/README.en.md" "$BUILD/usr/share/doc/liquid-uninstaller/"
 install -m644 "$ROOT/LICENSE" "$BUILD/usr/share/doc/liquid-uninstaller/LICENSE"
-install -m644 "$ROOT/screenshot.png" "$ROOT/intro.png" "$ROOT/loading.png" "$ROOT/self-uninstall.png" \
-  "$ROOT/screenshot-en.png" "$ROOT/intro-en.png" "$ROOT/loading-en.png" "$ROOT/self-uninstall-en.png" \
-  "$BUILD/usr/share/doc/liquid-uninstaller/"
+install -d "$BUILD/usr/share/doc/liquid-uninstaller/docs"
+install -m644 "$ROOT/docs/GITHUB.md" "$BUILD/usr/share/doc/liquid-uninstaller/docs/GITHUB.md"
+install -d "$BUILD/usr/share/doc/liquid-uninstaller/docs/images"
+install -m644 "$ROOT/docs/images/"*.png "$BUILD/usr/share/doc/liquid-uninstaller/docs/images/"
 install -m644 "$ROOT/debian/copyright" "$BUILD/usr/share/doc/liquid-uninstaller/copyright"
 install -m644 "$ROOT/debian/changelog.Debian.gz" \
   "$BUILD/usr/share/doc/liquid-uninstaller/changelog.Debian.gz"
