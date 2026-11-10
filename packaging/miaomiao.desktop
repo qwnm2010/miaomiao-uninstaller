@@ -1,0 +1,17 @@
+[Desktop Entry]
+Type=Application
+Name=喵喵
+Name[en]=Miaomiao
+GenericName=应用卸载器
+GenericName[en]=Application Uninstaller
+Comment=安全卸载应用并清理残留配置
+Comment[en]=Safely remove applications and their leftovers
+Exec=miaomiao
+TryExec=/usr/bin/miaomiao
+Icon=miaomiao
+Terminal=false
+Categories=Settings;PackageManager;
+Keywords=uninstall;remove;cleanup;residue;config;喵喵;卸载;清理;残留;
+StartupNotify=true
+StartupWMClass=miaomiao
+X-GNOME-UsesNotifications=true

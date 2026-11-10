@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+if [ "$1" = "configure" ]; then
+    # Remove files from the 1.1.x layout on in-place upgrades.
+    rm -f /usr/bin/liquid-uninstaller
+    rm -f /usr/share/applications/liquid-uninstaller.desktop
+    rm -rf /usr/lib/liquid-uninstaller
+    rm -f /usr/share/icons/hicolor/*/apps/liquid-uninstaller.png
+    if command -v update-desktop-database >/dev/null 2>&1; then
+        update-desktop-database -q /usr/share/applications || true
+    fi
+    if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+        gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor || true
+    fi
+fi
+exit 0

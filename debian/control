@@ -1,0 +1,25 @@
+Package: liquid-uninstaller
+Version: 1.5.0
+Section: admin
+Priority: optional
+Architecture: amd64
+Installed-Size: 2728
+Maintainer: Miaomiao <kali@localhost>
+Depends: python3 (>= 3.11), python3-pyqt6, pkexec, desktop-file-utils, hicolor-icon-theme, libc6 (>= 2.34)
+Suggests: flatpak, snapd
+Description: 喵喵 — technical instrument-panel application uninstaller for Debian
+ 喵喵 (Miaomiao) is a graphical uninstaller with a cold, precise instrument
+ panel interface, designed for Kali Linux 2026.3 / KDE Plasma 6 and
+ dependency-compatible Debian-based systems.
+ .
+ It supports APT, Flatpak, Snap, local bundles and AppImages, previews reverse
+ dependencies and running processes, scans user-level configuration leftovers,
+ protects shared XDG directories, and quarantines residual files with restore
+ support. System package removal is delegated to the native package managers
+ through Polkit.
+ .
+ It includes a native C filesystem accelerator for fast residual sizing, an
+ in-app self-uninstall flow, and in-place Debian upgrades that remove 1.1.x
+ files automatically. The application is intentionally conservative: it never recursively deletes
+ shared user folders, never edits system configuration directly, and excludes
+ the uninstaller itself from its own application list.
